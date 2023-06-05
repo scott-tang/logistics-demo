@@ -1,0 +1,66 @@
+{
+  "root": true,
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nrwl/nx", "typescript-sort-keys", "react", "react-native"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "@nrwl/nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": ["*"]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "rules": {
+        "@nrwl/nx/enforce-module-boundaries": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "typescript-sort-keys/interface": "error",
+        "typescript-sort-keys/string-enum": [
+          "error",
+          "asc",
+          {
+            "caseSensitive": false,
+            "natural": true
+          }
+        ],
+        "no-duplicate-imports": "error",
+        "curly": "error",
+        "no-console": [
+          "error",
+          {
+            "allow": ["warn", "error", "info"]
+          }
+        ],
+        "object-shorthand": ["error", "always"],
+        "quotes": [
+          "error",
+          "single",
+          {
+            "avoidEscape": true,
+            "allowTemplateLiterals": true
+          }
+        ],
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-empty-function": "off"
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nrwl/nx/javascript"],
+      "rules": {}
+    }
+  ]
+}

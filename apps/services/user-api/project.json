@@ -1,0 +1,107 @@
+{
+  "name": "user-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/user-api/src",
+  "projectType": "application",
+  "targets": {
+    "pre-build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["npx tsc --build ./apps/user-api/src/migrations/tsconfig.migration.json"]
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "npx nx run user-api:pre-build",
+            "forwardAllArgs": false
+          },
+          {
+            "command": "npx nx run user-api:webpack-build",
+            "forwardAllArgs": false
+          }
+        ],
+        "parallel": false
+      }
+    },
+    "webpack-build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/user-api",
+        "main": "apps/user-api/src/main.ts",
+        "tsConfig": "apps/user-api/tsconfig.app.json",
+        "assets": [
+          "apps/user-api/src/assets",
+          "apps/user-api/src/typeorm-res",
+          {
+            "glob": "**/*",
+            "input": "libs/util-api/src/lib/assets",
+            "output": "assets"
+          }
+        ],
+        "generatePackageJson": true
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "port": 4005,
+        "buildTarget": "user-api:webpack-build",
+        "waitUntilTargets": ["user-api:pre-build"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/user-api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/user-api"],
+      "options": {
+        "jestConfig": "apps/user-api/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "create-migration": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "typeorm-ts-node-commonjs migration:create ./src/migrations/{args.name}",
+        "cwd": "apps/user-api",
+        "forwardAllArgs": false
+      }
+    },
+    "generate-migration": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "typeorm-ts-node-commonjs migration:generate ./src/migrations/{args.name} -d ./ormconfig.ts",
+        "cwd": "apps/user-api",
+        "forwardAllArgs": false
+      }
+    },
+    "run-migrations": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "typeorm-ts-node-commonjs migration:run -d ./ormconfig.ts",
+        "cwd": "apps/user-api"
+      }
+    },
+    "revert-migrations": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "typeorm-ts-node-commonjs migration:revert -d ./ormconfig.ts",
+        "cwd": "apps/user-api"
+      }
+    }
+  },
+  "tags": []
+}

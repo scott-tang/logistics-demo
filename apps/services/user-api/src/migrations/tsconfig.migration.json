@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "outDir": "../typeorm-res/migrations",
+    "types": ["node", "tslib"],
+    "module": "commonjs",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "target": "es2015",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["*.ts"]
+}
