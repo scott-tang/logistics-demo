@@ -239,7 +239,7 @@
     "@types/validatorjs": "^3.15.0",
     "@typescript-eslint/eslint-plugin": "~5.48.2",
     "@typescript-eslint/parser": "~5.48.2",
-    "babel-jest": "29.3.1",
+    "babel-jest": "29.5.0",
     "babel-loader": "^9.1.2",
     "babel-preset-env": "1.7.0",
     "clean-webpack-plugin": "^4.0.0",
